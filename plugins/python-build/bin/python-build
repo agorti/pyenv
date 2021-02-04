@@ -290,13 +290,14 @@ has_checksum_support() {
 }
 
 verify_checksum() {
+  echo "add 1"
   local checksum_command
   local filename="$1"
   local expected_checksum="$(echo "$2" | tr [A-Z] [a-z])"
 
   echo "expected_checksum $expected_checksum"
   echo "case ${#expected_checksum}"
-  
+
   # If the specified filename doesn't exist, return success
   [ -e "$filename" ] || return 0
 
