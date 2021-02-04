@@ -384,6 +384,9 @@ fetch_tarball() {
   local checksum
   local extracted_dir
 
+  echo "${package_name}"
+  echo "${package_url}"
+
   if [ "$package_url" != "${package_url/\#}" ]; then
     checksum="${package_url#*#}"
     package_url="${package_url%%#*}"
@@ -394,6 +397,9 @@ fetch_tarball() {
       fi
     fi
   fi
+
+  echo "${checksum}"
+  echo "${mirror_url}"
 
   local tar_args="xzf"
   local package_filename="${package_name}.tar.gz"
@@ -491,6 +497,8 @@ download_tarball() {
   local package_filename="$2"
   local checksum="$3"
 
+  echo "package_filename $package_filename"
+  echo "checksum $checksum"
   echo "-> $package_url" >&2
 
   if http get "$package_url" "$package_filename" >&4 2>&1; then
@@ -500,6 +508,7 @@ download_tarball() {
     return 1
   fi
 
+  echo ">&4 2>&1"
   if [ -n "$PYTHON_BUILD_CACHE_PATH" ]; then
     local cached_package_filename="${PYTHON_BUILD_CACHE_PATH}/$package_filename"
     { mv "$package_filename" "$cached_package_filename"
